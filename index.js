@@ -24,7 +24,7 @@ async function setupWebcam() {
 async function app() {
 	console.log('Loading mobilenet...');
 
-	// load the model
+	// load the model it called mobilenet
 	net = await mobilenet.load();
 	console.log('Successfully load model');
 
@@ -34,8 +34,9 @@ async function app() {
 	// console.log(result);
 
 	await setupWebcam();
-
+	// read an image from the webcam and associcates it with a specific class index
 	const addExample = classId => {
+		// Get the intermediate activation of mobilenet 'conv_preds' and pass that to the KNN classifier
 		const activation = net.infer(webcamElement, 'conv_preds');
 		classifier.addExample(activation, classId);
 	};
@@ -46,9 +47,9 @@ async function app() {
 
 	while (true) {
 		if (classifier.getNumClasses() > 0) {
-			// Get the activation from mobilenet from the webcam.
+			// get the activation from mobilenet from the webcam.
 			const activation = net.infer(webcamElement, 'conv_preds');
-			// Get the most likely class and confidences from the classifier module.
+			// get the most likely class and confidences from the classifier module.
 			const result = await classifier.predictClass(activation);
 
 			const classes = ['A', 'B', 'C'];
