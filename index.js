@@ -40,11 +40,16 @@ async function app() {
 		const activation = net.infer(webcamElement, 'conv_preds');
 		classifier.addExample(activation, classId);
 	};
+	const noAction = () => {
+		console.log("No Action!!");
+	};
+
 	// When clicking a button, add an example for that class.
 	document.getElementById('class-a').addEventListener('click', () => addExample(0));
 	document.getElementById('class-b').addEventListener('click', () => addExample(1));
 	document.getElementById('class-c').addEventListener('click', () => addExample(2));
-
+	document.getElementById('class-n').addEventListener('click', () => noAction());
+	
 	while (true) {
 		if (classifier.getNumClasses() > 0) {
 			// get the activation from mobilenet from the webcam.
